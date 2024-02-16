@@ -1,0 +1,12 @@
+<div>
+  <!-- <app-buttons *ngIf=" isLogin == false" (loginEvent)="showComponent('login')" /> -->
+
+
+  <!-- <app-logout-btn *ngIf=" isLogin == true" (logoutEvent)="changeIsLogin('login')" /> -->
+  <app-login-form *ngIf="componentToShow == 'login'" (onSubmitLoginEvent)="onLogin($event)"
+    (onSubmitRegisterEvent)="onRegister($event)" />
+  <!-- <app-auth-content *ngIf="componentToShow == 'fileUpload'" /> -->
+  <app-dash-board-content *ngIf="componentToShow == 'dashboard'" />
+
+
+</div>

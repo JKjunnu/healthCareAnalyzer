@@ -1,0 +1,380 @@
+<div class="container pt-4">
+  <div class="row justify-content-md-center">
+    <div class="col-12">
+      <div class="card bg-light border-dark mb-4 pt-1">
+
+
+        <div class="card-header">
+          <ul class="nav nav-pills nav-justified card-header-pills" id="ex1" role="tablist">
+            <li class="nav-item h4" role="presentation">
+              <button [ngClass]=" active == 'patient' ? 'nav-link active' : 'nav-link'" id="tab-student"
+                (click)="onPatientInfoTab()">Patient Info</button>
+            </li>
+
+            <li class="nav-item h4" role="presentation">
+              <button [ngClass]=" active == 'analytics' ? 'nav-link active' : 'nav-link'" id="tab-guide"
+                (click)="onAnalyticsTab()">Analytics</button>
+            </li>
+
+            <li class="nav-item h4" role="presentation">
+              <button *ngIf="roles == 'ROLE_ADMIN'" [ngClass]=" active == 'upload' ? 'nav-link active' : 'nav-link'"
+                id="tab-division" (click)="onUploadTab()">Upload data</button>
+            </li>
+
+            <!-- <li class="nav-item" role="presentation">
+            <button *ngIf="roles == 'ROLE_ADMIN'" [ngClass]=" active == 'academic' ? 'nav-link active' : 'nav-link'"
+              id="tab-academic" (click)="onAcademicCellChairTab()">Academic Cell Chairman Form</button>
+          </li> -->
+
+            <li class="nav-item h4" role="presentation">
+              <button *ngIf="roles == 'ROLE_ADMIN'"
+                [ngClass]=" active == 'registerAdmin' ? 'nav-link active' : 'nav-link'" id="tab-register"
+                (click)="onRegisterAdmin()">Register Admin</button>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+    <div class="tab-content">
+      <div [ngClass]="active =='patient' ? 'tab-pane fade show active' : 'tab-pane fade'">
+
+
+        <div class="container border border-dark rounded p-4">
+          <div class="row justify-content-center  ">
+            <div class="col-12">
+
+              <div class="table-responsive ">
+                <table class="table table-bordered table-hover">
+                  <thead class="table-dark">
+                    <tr>
+                      <th *ngFor="let head of tableHeadList" scope="col">{{head}}</th>
+                      <!-- <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let patient of allPatientData | paginate:{
+                        itemsPerPage: tableSize,
+                        currentPage: page,
+                        totalItems: count} let i = index">
+                      <th scope="row">{{patient.id}}</th>
+                      <td>{{patient.firstName}}</td>
+                      <td>{{patient.lastName}}</td>
+                      <td>{{patient.email}}</td>
+                      <td>{{patient.age}}</td>
+                      <td>{{patient.sex}}</td>
+                      <td>{{patient.cp}}</td>
+                      <td>{{patient.trestbps}}</td>
+                      <td>{{patient.chol}}</td>
+                      <td>{{patient.fbs}}</td>
+                      <td>{{patient.restecg}}</td>
+                      <td>{{patient.thalach}}</td>
+                      <td>{{patient.exang}}</td>
+                      <td>{{patient.oldpeak}}</td>
+                      <td>{{patient.slope}}</td>
+                      <td>{{patient.ca}}</td>
+                      <td>{{patient.thal}}</td>
+                      <td>{{patient.target}}</td>
+
+                    </tr>
+                  </tbody>
+                </table>
+                <div>
+                  <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+                  </pagination-controls>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content " [ngClass]="active =='analytics' ? 'tab-pane fade show active' : 'tab-pane fade'">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-10">
+              <form (ngSubmit)=" onSubmitAnalytics()" #loginForm="ngForm">
+                <div class="container px-4 text-center">
+                  <div class="row justify-content-center">
+
+                    <div class="col-6">
+
+                      <div class="card bg-light mb-3" style="max-width: 30rem;">
+                        <div class="card-header h6">X Variable</div>
+                        <div class="card-body">
+                          <div class="container">
+                            <div class="row justify-content-center">
+                              <div class="col-8">
+                                <select name="x-variable" class="form-control"
+                                  (change)="onChangeXVariable($any($event.target).value)">
+                                  <option disabled selected>Select x-variable</option>
+                                  <option value="age">Age</option>
+                                  <option value="sex">Sex</option>
+                                  <option value="cp">Chest Pain Type</option>
+                                  <option value="trestbps">Resting Blood Pressure</option>
+                                  <option value="chol">Serum Cholesterol</option>
+                                  <option value="fbs">Fasting Blood Sugar</option>
+                                  <option value="restecg">Resting Electrocardiographic Results</option>
+                                  <option value="thalach">Maximum Heart Rate Achieved</option>
+                                  <option value="exang">Exercise-Induced Angina</option>
+                                  <option value="oldpeak">Oldpeak(ST Depression)</option>
+                                  <option value="slope">Slope of Peak Exercise ST Segment</option>
+                                  <option value="thal">Number of Major Vessels Colored by Fluoroscopy</option>
+                                  <option value="ca">Thalassemia</option>
+                                </select>
+                              </div>
+
+                              <div class="col-4">
+                                <button type="submit" class="btn btn-primary btn-block">View Graph</button>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-6">
+
+                      <div class="card bg-light mb-3" style="max-width: 30rem;">
+                        <div class="card-header h6">Graph Type</div>
+                        <div class="card-body">
+                          <div class="container">
+                            <div class="row justify-content-center">
+
+                              <div class="col-6">
+                                <select name="graph-type" class="form-control"
+                                  (change)="onChangeGraphType($any($event.target).value)">
+                                  <option disabled selected>Select Graph Type</option>
+                                  <option value="vb">Vertical Bar Chart</option>
+                                  <option value="hb">Horizontal Bar Chart</option>
+                                  <option value="p">Pie Chart</option>
+                                  <option value="pg">Pie Grid Chart</option>
+                                  <option value="ap">Advanced Pie Chart</option>
+                                </select>
+                              </div>
+
+
+
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <!-- <label class="form-label" for="graph-type">Graph Type</label> -->
+
+
+                    </div>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+
+
+          </div>
+          <div class="row m-4 justify-content-center ">
+            <div class="col-6 border border-dark rounded">
+              <div #containerRef class="card-body">
+                <ngx-charts-advanced-pie-chart *ngIf="chartType == 'ap'"
+                  [view]="[containerRef.offsetWidth, containerRef.offsetHeight]" [scheme]="colorScheme" [results]="data"
+                  [gradient]="gradient" (select)="onSelect($event)">
+                </ngx-charts-advanced-pie-chart>
+
+                <ngx-charts-pie-chart *ngIf="chartType == 'p'"
+                  [view]="[containerRef.offsetWidth, containerRef.offsetHeight]" [scheme]="colorScheme" [results]="data"
+                  [gradient]="gradient" [legend]="showLegend" [labels]="showLabels" [doughnut]="isDoughnut">
+                </ngx-charts-pie-chart>
+
+                <ngx-charts-pie-grid *ngIf="chartType == 'pg'"
+                  [view]="[containerRef.offsetWidth, containerRef.offsetHeight]" [scheme]="colorScheme" [results]="data"
+                  (select)="onSelect($event)">
+                </ngx-charts-pie-grid>
+
+                <ngx-charts-bar-vertical *ngIf="chartType == 'vb'"
+                  [view]="[containerRef.offsetWidth, containerRef.offsetHeight]" [scheme]="colorScheme" [results]="data"
+                  [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                  [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                  [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-vertical>
+
+                <ngx-charts-bar-horizontal *ngIf="chartType == 'hb'"
+                  [view]="[containerRef.offsetWidth, containerRef.offsetHeight]" [scheme]="colorScheme" [results]="data"
+                  [gradient]="gradient" [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend"
+                  [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel"
+                  [yAxisLabel]="yAxisLabel" (select)="onSelect($event)">
+                </ngx-charts-bar-horizontal>
+              </div>
+            </div>
+
+
+
+            <div class="row justify-content-md-center m-4">
+              <div class="col-10">
+                <div class="card mb-3" style="max-width: 80rem;">
+                  <div class="card-header h4">Meta Data</div>
+                  <div class="card-body">
+                    <h6 class="card-title">1. Age: Numeric (e.g., 52)</h6>
+                    <h6 class="card-title">2. Sex: Categorical (0: Female, 1: Male)</h6>
+                    <h6 class="card-title">3. Chest Pain Type: Categorical (0: Typical Angina, 1: Atypical Angina,
+                      2:
+                      Non-anginal Pain, 3:
+                      Asymptomatic)</h6>
+                    <h6 class="card-title">4. Resting Blood Pressure: Numeric (e.g., 125)</h6>
+                    <h6 class="card-title">5. Serum Cholesterol: Numeric in mg/dL (e.g., 212)</h6>
+                    <h6 class="card-title">6. Fasting Blood Sugar: Categorical (0: <= 120 mg/dL, 1:> 120 mg/dL)</h6>
+                    <h6 class="card-title">7. Resting Electrocardiographic Results: Categorical (0: Normal, 1:
+                      Abnormality,
+                      2:
+                      Hypertrophy)</h6>
+                    <h6 class="card-title">8. Maximum Heart Rate Achieved: Numeric (e.g., 168)</h6>
+                    <h6 class="card-title">9. Exercise-Induced Angina: Categorical (0: No, 1: Yes)</h6>
+                    <h6 class="card-title">10. Oldpeak (ST Depression): Numeric (e.g., 1.0)</h6>
+                    <h6 class="card-title">11. Slope of Peak Exercise ST Segment: Categorical (0: Upsloping, 1:
+                      Flat,
+                      2:
+                      Downsloping)</h6>
+                    <h6 class="card-title">12. Number of Major Vessels Colored by Fluoroscopy: Numeric (0 to 3)</h6>
+                    <h6 class="card-title">13. Thalassemia: Categorical (0: Normal, 1: Fixed Defect, 2: Reversible
+                      Defect)
+                    </h6>
+
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="col-4">
+              <p class="h5"> Age: Numeric (e.g., 52)</p>
+              <p class="h5">Sex: Categorical (0: Female, 1: Male)</p>
+              <p class="h5">Chest Pain Type: Categorical (0: Typical Angina, 1: Atypical Angina, 2: Non-anginal Pain, 3:
+                Asymptomatic)</p>
+              <p class="h5">Resting Blood Pressure: Numeric (e.g., 125)</p>
+              <p class="h5">Serum Cholesterol: Numeric in mg/dL (e.g., 212)</p>
+              <p class="h5">Fasting Blood Sugar: Categorical (0: <= 120 mg/dL, 1:> 120 mg/dL)</p>
+              <p class="h5">Resting Electrocardiographic Results: Categorical (0: Normal, 1: Abnormality, 2:
+                Hypertrophy)</p>
+              <p class="h5">Maximum Heart Rate Achieved: Numeric (e.g., 168)</p>
+              <p class="h5">Exercise-Induced Angina: Categorical (0: No, 1: Yes)</p>
+              <p class="h5">Oldpeak (ST Depression): Numeric (e.g., 1.0)</p>
+              <p class="h5">Slope of Peak Exercise ST Segment: Categorical (0: Upsloping, 1: Flat, 2: Downsloping)</p>
+              <p class="h5">Number of Major Vessels Colored by Fluoroscopy: Numeric (0 to 3)</p>
+              <p class="h5">Thalassemia: Categorical (0: Normal, 1: Fixed Defect, 2: Reversible Defect)</p>
+            </div> -->
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content " [ngClass]="active =='upload' ? 'tab-pane fade show active' : 'tab-pane fade'">
+        <!-- <form (ngSubmit)=" onSubmitDivision()" #loginForm="ngForm">
+          <div class="form-outline mb-4">
+            <input class="form-control" type="text" id="hodDivision" name="hodDivision" [(ngModel)]="hodDivision" />
+            <label class="form-label" for="hodDivision">Division</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input class="form-control" type="text" id="hodName" name="hodName" [(ngModel)]="hodName" />
+            <label class="form-label" for="hodName">Name</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button>
+
+        </form> -->
+        <app-auth-content />
+
+      </div>
+
+      <!-- 
+
+      <div [ngClass]="active =='academic' ? 'tab-pane fade show active' : 'tab-pane fade'">
+        <form (ngSubmit)=" onSubmitAcademic()" #loginForm="ngForm">
+          <div class="form-outline mb-4">
+            <input class="form-control" type="text" id="academicCellChairmanEmpNo" name="academicCellChairmanEmpNo"
+              [(ngModel)]="academicCellChairmanEmpNo" />
+            <label class="form-label" for="academicCellChairmanEmpNo">Employee No</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input class="form-control" type="text" id="academicCellChairmanName" name="academicCellChairmanName"
+              [(ngModel)]="academicCellChairmanName" />
+            <label class="form-label" for="academicCellChairmanName">Name</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input class="form-control" type="text" id="academicCellChairmanDesign" name="academicCellChairmanDesign"
+              [(ngModel)]="academicCellChairmanDesign" />
+            <label class="form-label" for="academicCellChairmanDesign">Designation</label>
+          </div>
+
+          <div class="form-outline mb-4">
+            <input class="form-control" type="text" id="academicCellChairmanDivision"
+              name="academicCellChairmanDivision" [(ngModel)]="academicCellChairmanDivision" />
+            <label class="form-label" for="academicCellChairmanDivision">Division</label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button>
+
+        </form>
+      </div> -->
+
+      <div [ngClass]="active =='registerAdmin' ? 'tab-pane fade show active' : 'tab-pane fade'">
+
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-5">
+              <div class="card bg-light mb-3" style="max-width: 100rem;">
+
+                <div class="card-body">
+                  <form (ngSubmit)=" onSubmitRegisterAdmin()" #loginForm="ngForm">
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="adminFirstName">First Name</label>
+                      <input class="form-control" type="text" id="adminFirstName" name="adminFirstName"
+                        placeholder="Enter first name" [(ngModel)]="adminFirstName" />
+
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="adminLastName">Last Name</label>
+                      <input class="form-control" type="text" id="adminLastName" name="adminLastName"
+                        placeholder="Enter last name" [(ngModel)]="adminLastName" />
+
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="adminEmail">Email</label>
+                      <input class="form-control" type="text" id="adminEmail" name="adminEmail"
+                        placeholder="Enter email" [(ngModel)]="adminEmail" />
+
+                    </div>
+
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="adminPassword">Password</label>
+                      <input class="form-control" type="password" id="adminPassword" name="adminPassword"
+                        placeholder="Enter new password" [(ngModel)]="adminPassword" />
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Register</button>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

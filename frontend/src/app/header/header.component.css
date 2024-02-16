@@ -1,0 +1,11 @@
+.app-logo {
+    height: 100px;
+}
+
+.app-header {
+    background-color: lightblue;
+    height: 200px;
+    padding: 30px;
+    color: black;
+    text-align: center;
+}

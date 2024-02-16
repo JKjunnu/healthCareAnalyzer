@@ -1,0 +1,36 @@
+<div class="container text-center">
+
+  <div class="row justify-content-center m-4">
+    <div class="col-8">
+      <div class="card bg-light mb-3" style="max-width: 50rem;">
+        <div class="card-header h6">Upload a CSV file for Analysis</div>
+        <div class="card-body">
+          <div class="container">
+            <div class="row justify-content-center m-4">
+              <div class="col-8">
+                <input class="form-control" id="inFile" type="file" accept=".csv" (change)="onChange($event)">
+              </div>
+              <div class="col-2">
+                <button (click)="onUpload()" class="btn btn-primary">
+                  Upload
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Shareable short link of  uploaded file -->
+<!-- <div class="container text-center jumbotron" *ngIf="shortLink">
+  <h2> Visit Here</h2>
+  <a href="{{shortLink}}">{{shortLink}}</a>
+</div> -->
+
+<!--Flag variable is used here-->
+<!-- <div class="container" *ngIf="loading">
+  <h3>Loading ...</h3>
+</div> -->
